@@ -62,7 +62,7 @@ public class HtmlUtilsTest {
 
 	@Test
     public void testHtmlToPlain_plainTextOnly() {
-        // 纯文本测试
+
         assertEquals("Simple text", 
             HtmlUtils.htmlToPlain("Simple text", true, true));
             
@@ -74,8 +74,10 @@ public class HtmlUtilsTest {
     }
     
     @Test
-    public void testHtmlToPlain_openTagsOnly() {
-        // 只有开始标签测试
+    public void testHtmlToPlain_Tags() {
+        assertEquals("Text",
+            HtmlUtils.htmlToPlain("<p>Text</p>", true, true));
+
         assertEquals("Text", 
             HtmlUtils.htmlToPlain("<p>Text", true, true));
             
@@ -84,12 +86,7 @@ public class HtmlUtilsTest {
 
         assertEquals("Multiple tags",
             HtmlUtils.htmlToPlain("<p><b><i>Multiple tags", true, true));
-    }
-    
-    @Test
-    public void testHtmlToPlain_tagsWithAttributes() {
-        // 带属性的标签测试
-        assertEquals("Link text", 
+            assertEquals("Link text", 
             HtmlUtils.htmlToPlain("<a href='http://example.com'>Link text</a>", true, true));
             
         assertEquals("Styled text",
@@ -102,9 +99,10 @@ public class HtmlUtilsTest {
             HtmlUtils.htmlToPlain("<p id='test' class='important'>Multiple attributes</p>", true, true));
     }
     
+    
     @Test
     public void testHtmlToPlain_completeHtmlDocument() {
-        // 完整HTML文档测试
+
         String simpleDoc = "<html><head><title>Title</title></head><body>Content</body></html>";
         assertEquals("TitleContent", HtmlUtils.htmlToPlain(simpleDoc, true, true));
         
