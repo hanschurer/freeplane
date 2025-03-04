@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Stroke;
 import java.util.Collection;
 
+import jdk.internal.loader.Resource;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -50,15 +51,14 @@ public class CloudController implements IExtension {
 	public static final int NORMAL_WIDTH = 3;
 	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
 	public static final String RESOURCES_CLOUD_SHAPE = "standardcloudshape";
+	private final ResourceController resourceController;
 
-	public static Color getStandardColor() {
-		final ResourceController resourceController = ResourceController.getResourceController();
+	public Color getStandardColor() {
 		final String colorCode = resourceController.getProperty(CloudController.RESOURCES_CLOUD_COLOR);
 		return ColorUtils.stringToColor(colorCode);
 	}
 
-	public static CloudShape getStandardShape() {
-		final ResourceController resourceController = ResourceController.getResourceController();
+	public CloudShape getStandardShape() {
 		return resourceController.getEnumProperty(CloudController.RESOURCES_CLOUD_SHAPE, CloudShape.ARC);
 	}
 
@@ -76,8 +76,14 @@ public class CloudController implements IExtension {
 	final private ExclusivePropertyChain<CloudModel, NodeModel> cloudHandlers;
 // 	private final ModeController modeController;
 
-	public CloudController(final ModeController modeController) {
+	public CloudController(final ModeController modeController){
+		this(modeController, ResourceController.getResourceController());
+
+	}
+
+	public CloudController(final ModeController modeController, ResourceController resourceController) {
 //		this.modeController = modeController;
+		this.resourceController = resourceController;
 		cloudHandlers = new ExclusivePropertyChain<CloudModel, NodeModel>();
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
 			public CloudModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final CloudModel currentValue) {

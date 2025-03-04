@@ -23,6 +23,8 @@ import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 public class CloudModel implements IExtension {
 	public static CloudModel getModel(final NodeModel node) {
@@ -53,6 +55,8 @@ public class CloudModel implements IExtension {
 	
 	private CloudShape shape;
 
+	private final Color standardColor;
+
 	public CloudShape getShape() {
     	return shape;
     }
@@ -62,7 +66,10 @@ public class CloudModel implements IExtension {
     }
 
 	public CloudModel() {
-		color = CloudController.getStandardColor();
+		final ModeController modeController = Controller.getCurrentModeController();
+		CloudController controller = new CloudController(modeController);
+		standardColor = controller.getStandardColor();
+		color = standardColor;
 		shape = CloudShape.ARC;
 	}
 
@@ -71,6 +78,6 @@ public class CloudModel implements IExtension {
 	}
 
 	public void setColor(final Color color) {
-		this.color = color != null ? color : CloudController.getStandardColor();
+		this.color = color != null ? color : standardColor;
 	}
 }

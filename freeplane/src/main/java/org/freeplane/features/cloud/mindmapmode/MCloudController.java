@@ -98,9 +98,10 @@ public class MCloudController extends CloudController {
 		if ((cloud != null) == enable) {
 			return;
 		}
-		final Color color = cloud != null ? cloud.getColor() : CloudController.getStandardColor();
-		final CloudShape shape = cloud != null ? cloud.getShape() : CloudController.getStandardShape();
 		final ModeController modeController = Controller.getCurrentModeController();
+		CloudController cloudController = new CloudController(modeController);
+		final Color color = cloud != null ? cloud.getColor() : cloudController.getStandardColor();
+		final CloudShape shape = cloud != null ? cloud.getShape() : cloudController.getStandardShape();
 		final IActor actor = new IActor() {
 			public void act() {
 				if (enable) {
